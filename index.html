@@ -3,57 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matemática Avante</title>
+    <title>Matemática Avante | Portal Educacional</title>
     <style>
         :root {
-            --blue-dark: #003366;
-            --blue-light: #87CEEB;
-            --bg-color: #ffffff;
-            --text-color: #333;
+            --bg-dark: #121212;
+            --card-bg: #2D3748;
+            --accent-blue: #007BFF;
+            --light-blue: #87CEEB;
+            --text-main: #f0f0f0;
         }
-        body.dark-mode {
-            --bg-color: #121212;
-            --text-color: #f0f0f0;
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; transition: 0.3s; margin: 0; padding: 20px; }
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--blue-dark); padding-bottom: 10px; }
-        nav { margin: 20px 0; }
-        nav button { background-color: var(--blue-dark); color: white; border: none; padding: 10px 20px; margin-right: 10px; cursor: pointer; border-radius: 5px; }
-        .star-icon { width: 50px; height: 50px; display: block; margin-top: 20px; }
-        #login-area, #main-app { margin-top: 30px; }
+
+        /* Cabeçalho Premium */
+        header {
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-area img { width: 50px; height: 50px; }
+
+        /* Card de Login */
+        #login-area {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            width: 350px;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #4A5568;
+            background: #1A202C;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        button.btn-main {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button.btn-main:hover {
+            background-color: var(--light-blue);
+            transform: scale(1.02);
+        }
+
+        /* Área do App */
+        #main-app { width: 80%; margin-top: 50px; }
         .hidden { display: none; }
+        
+        nav { display: flex; gap: 20px; justify-content: center; }
+        .nav-btn { background: #333; color: white; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Matemática Avante</h1>
+        <div class="logo-area">
+            <img src="star-blue.png" alt="Logo Matemática Avante">
+            <h1>Matemática Avante</h1>
+        </div>
         <button id="theme-toggle">Alternar Modo</button>
     </header>
 
     <!-- Área de Login -->
     <div id="login-area">
-        <h2>Login</h2>
+        <h2>Bem-vindo ao seu Futuro</h2>
         <input type="text" id="user-role" placeholder="Aluno ou Admin">
         <input type="password" id="password" placeholder="Senha (Admin: Kyla26)">
-        <button onclick="realizarLogin()">Entrar</button>
+        <button class="btn-main" onclick="realizarLogin()">Entrar na Plataforma</button>
     </div>
 
     <!-- Área do App -->
     <div id="main-app" class="hidden">
         <nav>
-            <button onclick="showTab('facil')">Fácil</button>
-            <button onclick="showTab('medio')">Médio</button>
-            <button onclick="showTab('avancado')">Avançado</button>
+            <button class="nav-btn" onclick="showTab('facil')">Nível Básico</button>
+            <button class="nav-btn" onclick="showTab('medio')">Nível Intermediário</button>
+            <button class="nav-btn" onclick="showTab('avancado')">Nível Avançado</button>
         </nav>
-        <main id="content">
-            <p>Escolha um nível para começar. O sistema irá registrar seu progresso automaticamente.</p>
-            <img src="star-blue.png" alt="Conquista" class="star-icon">
+        <main id="content" style="text-align: center; margin-top: 50px;">
+            <p>Escolha um nível para começar sua jornada matemática.</p>
         </main>
-        <div id="admin-dashboard" class="hidden">
-            <h3>Painel do Administrador</h3>
-            <p>Monitoramento de notas e métricas de desempenho dos alunos.</p>
-        </div>
     </div>
 
     <script type="module">
@@ -70,7 +128,6 @@
         };
         initializeApp(firebaseConfig);
 
-        // Lógica de Login
         window.realizarLogin = () => {
             const role = document.getElementById('user-role').value;
             const password = document.getElementById('password').value;
@@ -78,8 +135,6 @@
             if (role.toLowerCase() === 'admin' && password === 'Kyla26') {
                 document.getElementById('login-area').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                alert("Bem-vindo, Administrador!");
             } else if (role.toLowerCase() === 'aluno') {
                 document.getElementById('login-area').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
@@ -88,17 +143,11 @@
             }
         };
 
-        // Troca de Tema
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
-
-        // Abas e Conteúdo
         window.showTab = (tabName) => {
             document.getElementById('content').innerHTML = `
                 <h2>Nível ${tabName.charAt(0).toUpperCase() + tabName.slice(1)}</h2>
-                <p>Carregando temas de ${tabName} do Firebase...</p>
-                <img src="star-blue.png" alt="Conquista" class="star-icon">
+                <p>Conteúdo de ${tabName} sendo carregado do banco de dados...</p>
+                <img src="star-blue.png" style="width:100px; margin-top:20px;">
             `;
         };
     </script>
