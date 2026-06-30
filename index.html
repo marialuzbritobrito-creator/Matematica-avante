@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemática Avante</title>
+    <style>
+        :root {
+            --blue-dark: #003366;
+            --blue-light: #87CEEB;
+            --bg-color: #ffffff;
+            --text-color: #333;
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: sans-serif;
+            transition: 0.3s;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--blue-dark);
+            padding-bottom: 10px;
+        }
+
+        nav { margin: 20px 0; }
+
+        nav button {
+            background-color: var(--blue-dark);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .star-icon { width: 50px; height: 50px; display: block; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Matemática Avante</h1>
+        <button id="theme-toggle">Alternar Modo</button>
+    </header>
+
+    <nav>
+        <button onclick="showTab('facil')">Fácil</button>
+        <button onclick="showTab('medio')">Médio</button>
+        <button onclick="showTab('avancado')">Avançado</button>
+    </nav>
+
+    <main id="content">
+        <p>Bem-vindo ao Matemática Avante. Escolha um nível para começar seus estudos.</p>
+        <img src="star-blue.png" alt="Conquista" class="star-icon">
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcdDMUnIy5seRWvKCR5gO9wkZO4rDK4rc",
+            authDomain: "matematica-avante.firebaseapp.com",
+            databaseURL: "https://matematica-avante-default-rtdb.firebaseio.com",
+            projectId: "matematica-avante",
+            storageBucket: "matematica-avante.firebasestorage.app",
+            messagingSenderId: "856243957420",
+            appId: "1:856243957420:web:2246db8924b9a7384db909",
+            measurementId: "G-6XJN6NEK7Y"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        // Lógica de Troca de Tema
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Função de Abas
+        window.showTab = (tabName) => {
+            const content = document.getElementById('content');
+            content.innerHTML = `<h2>Nível ${tabName.charAt(0).toUpperCase() + tabName.slice(1)}</h2>
+                                <p>Conteúdo exclusivo para o nível ${tabName} sendo carregado do Firebase...</p>
+                                <img src="star-blue.png" alt="Conquista" class="star-icon">`;
+        };
+    </script>
+</body>
+</html>
