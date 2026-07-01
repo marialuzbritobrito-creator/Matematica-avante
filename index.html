@@ -2,182 +2,95 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matemática Avante 🧮</title>
     <style>
-        /* Variáveis de Cores */
-        :root {
-            --bg-color: #0f172a; /* Azul marinho profundo */
-            --text-color: #f8fafc;
-            --card-bg: #1e293b;
-            --accent-blue: #38bdf8; /* Azul céu vibrante */
-            --glow: 0 0 15px rgba(56, 189, 248, 0.5);
-        }
-
-        /* Tema Claro */
-        body.light-mode {
-            --bg-color: #f1f5f9;
-            --text-color: #1e293b;
-            --card-bg: #ffffff;
-            --glow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            transition: 0.5s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        /* Estilo da Logo Redonda com Efeito */
-        .logo-round {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--accent-blue);
-            box-shadow: var(--glow);
-            transition: 0.3s;
-        }
-
-        header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 2px solid var(--accent-blue);
-        }
-
-        /* Botão Luzinha Decorado */
-        .theme-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--accent-blue);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 50%;
-            transition: 0.3s;
-        }
-
-        #login-area {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 25px;
-            width: 320px;
-            text-align: center;
-            margin-top: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            border: 1px solid var(--accent-blue);
-        }
-
-        input {
-            width: 85%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 10px;
-            border: 1px solid #444;
-            background: rgba(0,0,0,0.1);
-            color: var(--text-color);
-        }
-
-        button.action-btn {
-            background: var(--accent-blue);
-            color: #000;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: 0.3s;
-            margin: 5px;
-        }
-
-        button.action-btn:hover {
-            transform: scale(1.05);
-            box-shadow: var(--glow);
-        }
-
-        #main-app { width: 100%; max-width: 600px; }
-        .hidden { display: none; }
+        :root { --bg-color: #0f172a; --text-color: #f8fafc; --card-bg: #1e293b; --accent-blue: #38bdf8; }
+        body.light-mode { --bg-color: #f1f5f9; --text-color: #1e293b; --card-bg: #ffffff; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; transition: 0.5s; padding: 20px; }
         
-        .content-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            margin-top: 20px;
-            border-left: 5px solid var(--accent-blue);
-        }
+        .logo-round { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--accent-blue); }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-blue); padding-bottom: 10px; }
+        
+        #login-area, #main-app { background: var(--card-bg); padding: 30px; border-radius: 20px; max-width: 600px; margin: 20px auto; }
+        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #444; }
+        button { background: var(--accent-blue); border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; margin: 5px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #444; padding: 10px; text-align: left; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
     <header>
-        <div style="display:flex; align-items:center; gap:15px;">
+        <div style="display:flex; align-items:center; gap:10px;">
             <img src="star-blue.png" alt="Logo" class="logo-round" onerror="this.style.display='none'">
             <h1>Matemática Avante 🧮</h1>
         </div>
-        <button class="theme-btn" onclick="document.body.classList.toggle('light-mode')">💡</button>
+        <button onclick="document.body.classList.toggle('light-mode')">💡</button>
     </header>
 
-    <!-- Login -->
     <div id="login-area">
-        <h2>🔐 Entre no Sistema</h2>
-        <input type="text" id="role" placeholder="👤 Aluno ou Admin">
-        <input type="password" id="pass" placeholder="🔑 Senha">
-        <br><br>
-        <button class="action-btn" onclick="fazerLogin()">Entrar 🚀</button>
+        <h2>🔐 Acesso</h2>
+        <input type="text" id="username" placeholder="Nome do Aluno ou Admin">
+        <input type="password" id="pass" placeholder="Senha (Admin: Kyla26)">
+        <button onclick="fazerLogin()">Entrar 🚀</button>
     </div>
 
-    <!-- App (Conteúdo) -->
     <div id="main-app" class="hidden">
-        <div style="text-align:center; margin-top:20px;">
-            <button class="action-btn" onclick="carregarConteudo('basico')">📚 Básico</button>
-            <button class="action-btn" onclick="carregarConteudo('medio')">🧠 Intermediário</button>
-            <button class="action-btn" onclick="carregarConteudo('avancado')">🚀 Avançado</button>
+        <div id="nav-buttons">
+            <button onclick="carregarConteudo('basico')">📚 Básico</button>
+            <button onclick="carregarConteudo('medio')">🧠 Médio</button>
+            <button onclick="carregarConteudo('avancado')">🚀 Avançado</button>
+            <button id="admin-btn" class="hidden" onclick="abrirAdmin()">⚙️ Painel Admin</button>
         </div>
-
-        <div id="conteudo-display" class="content-card">
-            <h3>✨ Selecione um nível para começar sua jornada!</h3>
-        </div>
+        <div id="display-area" style="margin-top:20px;"></div>
     </div>
 
     <script>
-        const bancoDeDados = {
-            basico: { titulo: "📚 Nível Básico", texto: "Aqui estudaremos Aritmética e Regra de Três. O básico essencial para o ENEM! ✅", quiz: "Quanto é 15% de 200?" },
-            medio: { titulo: "🧠 Nível Intermediário", texto: "Foco total em Trigonometria e Funções de 2º grau. Vamos lá! 🎯", quiz: "O que é o teorema de Pitágoras?" },
-            avancado: { titulo: "🚀 Nível Avançado", texto: "Cálculo diferencial, Integrais e Álgebra Linear. Desafio máximo! 💎", quiz: "Qual a derivada de x²?" }
-        };
-
+        // Função de Login e Registro de Atividade
         function fazerLogin() {
-            const role = document.getElementById('role').value.toLowerCase();
+            const user = document.getElementById('username').value;
             const pass = document.getElementById('pass').value;
-
-            if((role === 'admin' && pass === 'Kyla26') || role === 'aluno') {
+            
+            if(user && (pass === 'Kyla26' || pass === 'aluno123')) {
+                const isAdmin = (pass === 'Kyla26');
+                
+                // Salvar Log de Acesso
+                let logs = JSON.parse(localStorage.getItem('logs') || "[]");
+                logs.push({ usuario: user, hora: new Date().toLocaleTimeString(), tipo: isAdmin ? "Admin" : "Aluno" });
+                localStorage.setItem('logs', JSON.stringify(logs));
+                
                 document.getElementById('login-area').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
-            } else {
-                alert("❌ Usuário ou senha incorretos!");
-            }
+                if(isAdmin) document.getElementById('admin-btn').classList.remove('hidden');
+            } else { alert("❌ Login ou senha incorretos!"); }
         }
 
+        // Registrar Progresso do Aluno
         function carregarConteudo(nivel) {
-            const data = bancoDeDados[nivel];
-            document.getElementById('conteudo-display').innerHTML = `
-                <h2>${data.titulo}</h2>
-                <p>${data.texto}</p>
-                <div style="background:rgba(0,0,0,0.1); padding:15px; border-radius:10px;">
-                    <p><strong>📝 Quiz:</strong> ${data.quiz}</p>
-                    <input type="text" placeholder="Sua resposta aqui...">
-                    <button class="action-btn" onclick="alert('✅ Resposta enviada com sucesso!')">Enviar 📤</button>
-                </div>
+            // Salvar Progresso
+            const user = document.getElementById('username').value;
+            localStorage.setItem('progresso_' + user, nivel);
+            
+            document.getElementById('display-area').innerHTML = `
+                <h2>Nível: ${nivel.toUpperCase()}</h2>
+                <p>Estudando: ${nivel === 'basico' ? 'Aritmética' : 'Geometria'}</p>
+                <button onclick="alert('Concluído!')">Marcar como Finalizado ✅</button>
             `;
+        }
+
+        // Painel do Administrador
+        function abrirAdmin() {
+            const logs = JSON.parse(localStorage.getItem('logs') || "[]");
+            let html = "<h2>⚙️ Painel Administrativo</h2><table><tr><th>Usuário</th><th>Tipo</th><th>Hora</th></tr>";
+            
+            logs.forEach(log => {
+                html += `<tr><td>${log.usuario}</td><td>${log.tipo}</td><td>${log.hora}</td></tr>`;
+            });
+            
+            html += "</table><button onclick='localStorage.clear(); location.reload();'>Limpar Dados 🧹</button>";
+            document.getElementById('display-area').innerHTML = html;
         }
     </script>
 </body>
