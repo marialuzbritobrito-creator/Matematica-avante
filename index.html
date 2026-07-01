@@ -2,108 +2,24 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matemática Avante 🧮</title>
     <style>
-        :root { 
-            --bg: #0f172a; 
-            --card: #1e293b; 
-            --text: #f8fafc; 
-            --accent: #38bdf8; 
-            --success: #22c55e;
-            --danger: #ef4444;
-        }
-        body.light-mode { 
-            --bg: #f1f5f9; 
-            --card: #ffffff; 
-            --text: #1e293b; 
-        }
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 15px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            transition: 0.3s;
-        }
+        :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #38bdf8; --success: #22c55e; --danger: #ef4444; }
+        body.light-mode { --bg: #f1f5f9; --card: #ffffff; --text: #1e293b; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; transition: 0.3s; }
+        .container { max-width: 480px; margin: auto; }
         
-        .container { width: 100%; max-width: 480px; box-sizing: border-box; }
+        /* Header mantido com a logo e estilo original */
+        header { position: sticky; top: 0; z-index: 1000; background: var(--bg); padding: 15px 0; border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; }
+        .logo { width: 55px; height: 55px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; }
+        .theme-btn { font-size: 24px; cursor: pointer; background: none; border: none; }
         
-        /* NOVO: Logo Fixa e Redonda */
-        header { 
-            position: sticky; top: 0; z-index: 1000; background: var(--bg);
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            width: 100%; 
-            padding: 10px 0;
-            border-bottom: 2px solid var(--accent);
-            margin-bottom: 20px;
-        }
-        .logo { 
-            width: 55px; height: 55px; 
-            border-radius: 50%; border: 3px solid var(--accent); 
-            object-fit: cover; 
-        }
-        .theme-btn { background: rgba(255, 255, 255, 0.1); border: 2px solid var(--accent); font-size: 20px; cursor: pointer; padding: 8px; border-radius: 50%; color: var(--text); }
-        
-        .card { 
-            background: var(--card); 
-            padding: 22px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
-            margin-bottom: 20px; 
-            box-sizing: border-box;
-        }
-        
-        input, select { 
-            width: 100%; 
-            padding: 14px; 
-            margin: 12px 0; 
-            border-radius: 12px; 
-            border: 1px solid #475569; 
-            box-sizing: border-box; 
-            font-size: 16px;
-            background: rgba(0, 0, 0, 0.05);
-            color: var(--text);
-        }
-        body.light-mode input, body.light-mode select { background: #fff; }
-        
-        button { 
-            background: var(--accent); 
-            color: #0f172a;
-            border: none; 
-            padding: 14px; 
-            border-radius: 12px; 
-            width: 100%; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 16px;
-            margin: 6px 0; 
-            transition: 0.2s;
-        }
-        button:active { transform: scale(0.98); }
-        
+        .card { background: var(--card); padding: 22px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-bottom: 20px; }
+        button { background: var(--accent); color: #0f172a; border: none; padding: 14px; border-radius: 12px; width: 100%; cursor: pointer; font-weight: bold; margin: 6px 0; }
+        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid #475569; background: #0f172a; color: white; }
         .hidden { display: none; }
-        
         .feedback { padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; text-align: center; }
-        
-        ul { padding-left: 20px; margin: 15px 0; }
-        li { margin-bottom: 12px; line-height: 1.5; }
-        a { color: var(--accent); font-weight: bold; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
-        th, td { border: 1px solid #475569; padding: 10px; text-align: left; }
-        th { background: rgba(0,0,0,0.2); }
-        .table-wrapper { width: 100%; overflow-x: auto; }
-
-        /* NOVO: Gráfico Admin */
-        .progress-bar { background: #334155; height: 20px; border-radius: 10px; overflow: hidden; margin: 10px 0; }
-        .progress-fill { background: var(--accent); height: 100%; transition: 0.5s; }
     </style>
 </head>
 <body>
@@ -111,157 +27,126 @@
 <div class="container">
     <header>
         <div style="display:flex; align-items:center; gap:12px;">
-            <!-- IMAGEM CORRIGIDA -->
             <img src="star-blue.png" class="logo" alt="Logo" onerror="this.style.display='none'">
-            <h1 style="font-size: 1.4rem; margin: 0;">Matemática Avante</h1>
+            <h1 style="font-size: 1.4rem; margin: 0;">Matemática Avante 🧮</h1>
         </div>
-        <button class="theme-btn" onclick="document.body.classList.toggle('light-mode')">💡</button>
+        <button class="theme-btn" onclick="document.body.classList.toggle('light-mode')">⭐</button>
     </header>
 
-    <!-- Tela de Login -->
+    <!-- Login -->
     <div id="login-screen" class="card">
-        <h2 style="margin-top: 0; text-align: center;">🔐 Identificação</h2>
-        <input type="text" id="user-name" placeholder="👤 Digite seu nome completo">
-        
-        <label style="font-weight: bold; font-size: 14px;">Selecione seu perfil:</label>
-        <select id="role-select" onchange="togglePasswordField()">
-            <option value="aluno">Aluno (Acesso Livre)</option>
-            <option value="admin">Administrador (Requer Senha)</option>
+        <h2 style="text-align: center;">🔐 Identificação</h2>
+        <input type="text" id="user-name" placeholder="👤 Seu nome completo">
+        <select id="role-select" style="padding:10px; width:100%; border-radius:10px;">
+            <option value="aluno">Aluno</option>
+            <option value="admin">Administrador</option>
         </select>
-
-        <div id="pass-field" class="hidden">
-            <input type="password" id="pass-code" placeholder="🔑 Digite a senha administrativa">
-        </div>
-
         <button onclick="efetuarLogin()">Entrar no Portal 🚀</button>
     </div>
 
-    <!-- Interface Principal -->
+    <!-- Main -->
     <div id="main-screen" class="hidden">
-        <!-- NOVO: Dashboard do Aluno com Medalhas -->
-        <div class="card" style="text-align: center;">
-            <h3 id="display-name" style="margin: 5px 0;"></h3>
-            <p>Pontos: <b id="display-points" style="color:var(--accent)">0</b> | Medalha: <span id="display-medal">🥉 Bronze</span></p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+        <div class="card">
+            <h3>Olá, <span id="display-name"></span>!</h3>
+            <p>Pontos: <b id="display-points">0</b> | Medalha: <span id="display-medal">🥉 Bronze</span></p>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
                 <button onclick="carregarLoja()" style="background:#fbbf24;">🛍️ Loja</button>
                 <button onclick="carregarRanking()" style="background:#a855f7; color:white;">🏆 Ranking</button>
             </div>
         </div>
-
-        <div class="card" style="padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <button onclick="carregarNivel('basico')">📚 Básico</button>
-            <button onclick="carregarNivel('medio')">🧠 Intermediário</button>
-            <button onclick="carregarNivel('avancado')">🚀 Avançado</button>
-            <button onclick="carregarCanais()" style="background: #a855f7; color: white;">🔗 Referências</button>
-            <button id="admin-btn" class="hidden" onclick="carregarPainelAdmin()" style="background: var(--danger); color: white; grid-column: span 2;">⚙️ Painel Admin</button>
+        
+        <div class="card" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button onclick="iniciarQuiz('basico')">📚 Básico</button>
+            <button onclick="iniciarQuiz('medio')">🧠 Intermediário</button>
+            <button onclick="iniciarQuiz('avancado')">🚀 Avançado</button>
+            <button onclick="carregarRefs()" style="background:#8b5cf6; color:white;">🔗 Referências</button>
+            <button id="admin-btn" class="hidden" onclick="carregarAdmin()" style="background:var(--danger); color:white; grid-column: span 2;">⚙️ Painel Admin</button>
         </div>
         
         <div id="content-area" class="card">
-            <h3 style="margin-top: 0; text-align: center; color: var(--accent);">✨ Boas-vindas!</h3>
-            <p style="text-align: center; line-height: 1.6;">Escolha uma das opções acima para estudar.</p>
+            <h3 style="text-align: center;">Escolha um nível para começar!</h3>
         </div>
     </div>
 </div>
 
 <script>
-    const SECRET_KEY = "SUA_SENHA_AQUI";
-    
-    // VARIÁVEIS PARA AS NOVAS FUNÇÕES
-    let pontosGlobais = parseInt(localStorage.getItem('user_pts') || 0);
-
-    const bancoMatematica = {
-        basico: { titulo: "📚 Básico", teoria: "Regra de 3 e %. 15% de 200 é 30.", pergunta: "Quanto é 15% de 200?", gabarito: "30" },
-        medio: { titulo: "🧠 Intermediário", teoria: "Ângulos internos de um triângulo = 180°.", pergunta: "Soma ângulos triângulo?", gabarito: "180" },
-        avancado: { titulo: "🚀 Avançado", teoria: "Determinante Matriz Identidade 2x2 = 1.", pergunta: "Det da Matriz Identidade 2x2?", gabarito: "1" }
+    // Banco de Dados Profundo (Conteúdo + Perguntas)
+    const banco = {
+        basico: [
+            { t: "Porcentagem é uma parte de um todo de 100. Regra: 15% de 200 é 15 x 2.", p: "Quanto é 15% de 200?", r: "30" },
+            { t: "Regra de três simples: mantém a proporção entre valores.", p: "Se 2 pães custam 4 reais, 5 pães custam?", r: "10" }
+        ],
+        medio: [
+            { t: "Triângulos: a soma dos ângulos internos é sempre 180 graus.", p: "Soma ângulos triângulo?", r: "180" }
+        ],
+        avancado: [
+            { t: "Matriz Identidade: diagonal principal é 1.", p: "Det da Matriz Identidade 2x2?", r: "1" }
+        ]
     };
 
-    function togglePasswordField() {
-        const perfil = document.getElementById('role-select').value;
-        document.getElementById('pass-field').classList.toggle('hidden', perfil !== 'admin');
-    }
+    let user = { name: "", pts: 0, nivel: '', index: 0, fase: 'teoria' };
 
     function efetuarLogin() {
-        const nome = document.getElementById('user-name').value.trim();
-        const perfil = document.getElementById('role-select').value;
-        const senhaInserida = document.getElementById('pass-code').value;
-
-        if (nome === "") return alert("Preencha seu nome!");
-        if (perfil === 'admin' && senhaInserida !== SECRET_KEY) return alert("Senha incorreta!");
-
-        let registros = JSON.parse(localStorage.getItem('matematica_logs') || "[]");
-        registros.push({ estudante: nome, timestamp: new Date().toLocaleTimeString(), progresso: 'Login' });
-        localStorage.setItem('matematica_logs', JSON.stringify(registros));
-
-        document.getElementById('display-name').innerText = nome;
+        user.name = document.getElementById('user-name').value;
+        const role = document.getElementById('role-select').value;
+        document.getElementById('display-name').innerText = user.name;
         document.getElementById('login-screen').classList.add('hidden');
         document.getElementById('main-screen').classList.remove('hidden');
-        if (perfil === 'admin') document.getElementById('admin-btn').classList.remove('hidden');
-        atualizarUI();
+        if(role === 'admin') document.getElementById('admin-btn').classList.remove('hidden');
     }
 
-    function atualizarUI() {
-        document.getElementById('display-points').innerText = pontosGlobais;
-        let medalha = "🥉 Bronze";
-        if (pontosGlobais >= 100) medalha = "🥈 Prata";
-        if (pontosGlobais >= 200) medalha = "🥇 Ouro";
-        document.getElementById('display-medal').innerText = medalha;
+    // Lógica de Quiz Sequencial
+    function iniciarQuiz(nivel) {
+        user.nivel = nivel; user.index = 0; user.fase = 'teoria';
+        renderizar();
     }
 
-    function carregarNivel(nivel) {
-        const item = bancoMatematica[nivel];
-        document.getElementById('content-area').innerHTML = `
-            <h3>${item.titulo}</h3>
-            <p>${item.pergunta}</p>
-            <input type="number" id="resposta-estudante">
-            <button onclick="verificarQuestao('${nivel}')">Verificar</button>
-            <div id="zona-feedback"></div>
-        `;
-    }
-
-    function verificarQuestao(nivel) {
-        const resp = document.getElementById('resposta-estudante').value;
-        if (resp === bancoMatematica[nivel].gabarito) {
-            pontosGlobais += 20;
-            localStorage.setItem('user_pts', pontosGlobais);
-            alert("Acertou! +20 pontos.");
-            atualizarUI();
+    function renderizar() {
+        const item = banco[user.nivel][user.index];
+        const area = document.getElementById('content-area');
+        if(user.fase === 'teoria') {
+            area.innerHTML = `<h3>📖 Teoria:</h3><p>${item.t}</p><button onclick="user.fase='pergunta'; renderizar()">Continuar para Pergunta</button>`;
         } else {
-            alert("Incorreto!");
+            area.innerHTML = `<h3>📝 Pergunta:</h3><p>${item.p}</p><input type="number" id="resp"><button onclick="verificar()">Verificar</button>`;
         }
     }
 
-    function carregarCanais() {
-        document.getElementById('content-area').innerHTML = `<h3>Referências</h3><ul><li>Professor Ferretto</li></ul>`;
+    function verificar() {
+        const resp = document.getElementById('resp').value;
+        if(resp === banco[user.nivel][user.index].r) {
+            user.pts += 20;
+            document.getElementById('display-points').innerText = user.pts;
+            alert("Acertou! Liberando próxima...");
+            user.index++;
+            if(user.index < banco[user.nivel].length) {
+                user.fase = 'teoria';
+                renderizar();
+            } else {
+                document.getElementById('content-area').innerHTML = "<h3>🎉 Nível concluído com sucesso!</h3>";
+            }
+        } else {
+            alert("Resposta incorreta, revise o conceito!");
+        }
     }
 
-    // --- NOVAS FUNÇÕES ADICIONADAS ---
+    // Funcionalidades Adicionais
+    function carregarLoja() {
+        document.getElementById('content-area').innerHTML = `<h3>🛍️ Loja</h3><button onclick="alert('Item aplicado!')">Comprar Estilo Dark (50 pts)</button>`;
+    }
+
+    function carregarRefs() {
+        document.getElementById('content-area').innerHTML = `<h3>🔗 Referências</h3><ul>
+            <li><a href="https://www.youtube.com/@ProfessorFerreto">Prof. Ferretto</a></li>
+            <li><a href="https://www.youtube.com/@MatematicaRio">Matemática Rio</a></li>
+        </ul>`;
+    }
+
+    function carregarAdmin() {
+        document.getElementById('content-area').innerHTML = `<h3>⚙️ Admin</h3><p>Monitorando turma...</p><button onclick="alert('Medalha enviada!')">Enviar Medalha</button>`;
+    }
 
     function carregarRanking() {
-        // Simulação baseada nos logs de acesso
-        document.getElementById('content-area').innerHTML = `
-            <h3>🏆 Ranking dos Estudantes</h3>
-            <div class="ranking-item">1º Você - ${pontosGlobais} pts</div>
-        `;
-    }
-
-    function carregarLoja() {
-        document.getElementById('content-area').innerHTML = `
-            <h3>🛍️ Loja de Acessórios</h3>
-            <p>Seus Pontos: ${pontosGlobais}</p>
-            <button onclick="alert('Item comprado!')">Caneta Neon (50 pts)</button>
-        `;
-    }
-
-    function carregarPainelAdmin() {
-        const logs = JSON.parse(localStorage.getItem('matematica_logs') || "[]");
-        const ocupacao = Math.min(logs.length * 10, 100); // Gráfico simples
-        document.getElementById('content-area').innerHTML = `
-            <h3>⚙️ Painel de Monitoramento</h3>
-            <p>Engajamento da Turma:</p>
-            <div class="progress-bar"><div class="progress-fill" style="width:${ocupacao}%"></div></div>
-            <h4>Registros:</h4>
-            ${logs.slice(-5).map(l => `<p>${l.estudante} - ${l.progresso}</p>`).join('')}
-        `;
+        document.getElementById('content-area').innerHTML = `<h3>🏆 Ranking</h3><p>1º ${user.name} - ${user.pts} pts</p>`;
     }
 </script>
 </body>
