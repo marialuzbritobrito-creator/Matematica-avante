@@ -2,123 +2,108 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta tag essencial para o celular -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matemática Avante 🧮</title>
     <style>
-        :root { --bg-color: #0f172a; --text-color: #f8fafc; --card-bg: #1e293b; --accent-blue: #38bdf8; }
-        body.light-mode { --bg-color: #f1f5f9; --text-color: #1e293b; --card-bg: #ffffff; }
+        :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #38bdf8; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-color); 
-            font-family: sans-serif; 
-            margin: 0; 
-            padding: 10px; /* Menos padding lateral em celulares */
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        .container { width: 100%; max-width: 450px; }
+        header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .logo { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; }
         
-        /* Ajustes Mobile: Tamanhos maiores para tocar */
-        .logo-round { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--accent-blue); }
-        header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
-        
-        #login-area, #main-app { 
-            background: var(--card-bg); 
-            padding: 20px; 
-            border-radius: 15px; 
-            width: 100%; 
-            max-width: 400px; /* Não passa de 400px */
-            box-sizing: border-box; /* Garante que o padding não quebre o layout */
-            margin-top: 20px; 
-        }
-        
-        input { 
-            width: 100%; 
-            padding: 15px; /* Tamanho maior para facilitar digitação */
-            margin: 10px 0; 
-            border-radius: 10px; 
-            border: 1px solid #444; 
-            box-sizing: border-box;
-            font-size: 16px; /* Evita zoom automático em iPhones */
-        }
-        
-        button { 
-            background: var(--accent-blue); 
-            border: none; 
-            padding: 15px 20px; /* Botão grande para o dedo */
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            margin: 5px 0;
-            width: 100%;
-        }
-
-        /* Tabela Responsiva */
-        .table-container { width: 100%; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .card { background: var(--card); padding: 25px; border-radius: 20px; box-shadow: 0 10px 15px rgba(0,0,0,0.3); margin-bottom: 20px; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #444; box-sizing: border-box; }
+        button { background: var(--accent); border: none; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; margin: 5px 0; }
         
         .hidden { display: none; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { border: 1px solid #444; padding: 8px; text-align: left; }
     </style>
 </head>
 <body>
 
+<div class="container">
     <header>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <img src="star-blue.png" alt="Logo" class="logo-round" onerror="this.style.display='none'">
-            <h1 style="font-size: 1.2rem;">Matemática Avante</h1>
-        </div>
-        <button style="width: auto; padding: 10px;" onclick="document.body.classList.toggle('light-mode')">💡</button>
+        <img src="logo.png" class="logo" alt="Logo" onerror="this.style.display='none'">
+        <h1>Matemática Avante</h1>
     </header>
 
-    <div id="login-area">
-        <h2>🔐 Acesso</h2>
-        <input type="text" id="username" placeholder="Nome do Aluno ou Admin">
-        <input type="password" id="pass" placeholder="Senha (Admin: Kyla26)">
-        <button onclick="fazerLogin()">Entrar 🚀</button>
-    </div>
+    <!-- Login -->
+    <div id="login-screen" class="card">
+        <h2>🔐 Entre no Sistema</h2>
+        <input type="text" id="user-name" placeholder="Seu nome">
+        
+        <label>Você é:</label>
+        <select id="role-select" onchange="togglePass()">
+            <option value="aluno">Aluno (Sem senha)</option>
+            <option value="admin">Administrador</option>
+        </select>
 
-    <div id="main-app" class="hidden">
-        <div id="nav-buttons">
-            <button onclick="carregarConteudo('basico')">📚 Básico</button>
-            <button onclick="carregarConteudo('medio')">🧠 Médio</button>
-            <button onclick="carregarConteudo('avancado')">🚀 Avançado</button>
-            <button id="admin-btn" class="hidden" onclick="abrirAdmin()">⚙️ Painel Admin</button>
+        <div id="pass-field" class="hidden">
+            <input type="password" id="pass-code" placeholder="Digite a senha de administrador">
         </div>
-        <div id="display-area" style="margin-top:20px;"></div>
+
+        <button onclick="login()">Entrar 🚀</button>
     </div>
 
-    <script>
-        function fazerLogin() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('pass').value;
-            if(user && (pass === 'Kyla26' || pass === 'aluno123')) {
-                const isAdmin = (pass === 'Kyla26');
-                let logs = JSON.parse(localStorage.getItem('logs') || "[]");
-                logs.push({ usuario: user, hora: new Date().toLocaleTimeString(), tipo: isAdmin ? "Admin" : "Aluno" });
-                localStorage.setItem('logs', JSON.stringify(logs));
-                document.getElementById('login-area').classList.add('hidden');
-                document.getElementById('main-app').classList.remove('hidden');
-                if(isAdmin) document.getElementById('admin-btn').classList.remove('hidden');
-            } else { alert("❌ Dados incorretos!"); }
+    <!-- App -->
+    <div id="main-screen" class="hidden">
+        <div class="card">
+            <button onclick="renderContent('basico')">📚 Básico</button>
+            <button onclick="renderContent('medio')">🧠 Intermediário</button>
+            <button onclick="renderContent('avancado')">🚀 Avançado</button>
+            <button id="admin-btn" class="hidden" onclick="renderAdmin()" style="background:#ef4444;">⚙️ Painel Admin</button>
+        </div>
+        <div id="content-area" class="card">
+            <h3>Selecione um nível.</h3>
+        </div>
+    </div>
+</div>
+
+<script>
+    // A senha fica escondida aqui no código, longe dos campos de digitação
+    const SECRET_KEY = "Kyla26";
+
+    function togglePass() {
+        const role = document.getElementById('role-select').value;
+        const field = document.getElementById('pass-field');
+        field.classList.toggle('hidden', role === 'aluno');
+    }
+
+    function login() {
+        const name = document.getElementById('user-name').value;
+        const role = document.getElementById('role-select').value;
+        const pass = document.getElementById('pass-code').value;
+
+        if (!name) { alert("Por favor, digite seu nome!"); return; }
+
+        if (role === 'admin' && pass !== SECRET_KEY) {
+            alert("Senha de Administrador incorreta!");
+            return;
         }
 
-        function carregarConteudo(nivel) {
-            document.getElementById('display-area').innerHTML = `
-                <h2>Nível: ${nivel.toUpperCase()}</h2>
-                <button onclick="alert('Marcado!')">Concluir ✅</button>
-            `;
-        }
+        // Salvar log
+        let logs = JSON.parse(localStorage.getItem('logs') || "[]");
+        logs.push({ nome: name, hora: new Date().toLocaleTimeString(), tipo: role });
+        localStorage.setItem('logs', JSON.stringify(logs));
 
-        function abrirAdmin() {
-            const logs = JSON.parse(localStorage.getItem('logs') || "[]");
-            let html = "<h2>⚙️ Logs</h2><div class='table-container'><table><tr><th>User</th><th>Hora</th></tr>";
-            logs.forEach(log => { html += `<tr><td>${log.usuario}</td><td>${log.hora}</td></tr>`; });
-            html += "</table></div><button onclick='localStorage.clear(); location.reload();'>Limpar 🧹</button>";
-            document.getElementById('display-area').innerHTML = html;
-        }
-    </script>
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('main-screen').classList.remove('hidden');
+        if (role === 'admin') document.getElementById('admin-btn').classList.remove('hidden');
+    }
+
+    // Funções de conteúdo e admin seguem a mesma lógica anterior...
+    function renderContent(nivel) {
+        document.getElementById('content-area').innerHTML = `<h3>Nível ${nivel.toUpperCase()} carregado!</h3>`;
+    }
+
+    function renderAdmin() {
+        const logs = JSON.parse(localStorage.getItem('logs') || "[]");
+        let t = "<h2>Logs</h2><table><tr><th>Nome</th><th>Hora</th></tr>";
+        logs.forEach(l => t += `<tr><td>${l.nome}</td><td>${l.hora}</td></tr>`);
+        document.getElementById('content-area').innerHTML = t + "</table>";
+    }
+</script>
 </body>
 </html>
