@@ -3,153 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matemática Avante | Portal Educacional</title>
+    <title>Matemática Avante 🧮</title>
     <style>
+        /* Variáveis de Cores */
         :root {
-            --bg-dark: #121212;
-            --card-bg: #2D3748;
-            --accent-blue: #007BFF;
-            --light-blue: #87CEEB;
-            --text-main: #f0f0f0;
+            --bg-color: #0f172a; /* Azul marinho profundo */
+            --text-color: #f8fafc;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8; /* Azul céu vibrante */
+            --glow: 0 0 15px rgba(56, 189, 248, 0.5);
+        }
+
+        /* Tema Claro */
+        body.light-mode {
+            --bg-color: #f1f5f9;
+            --text-color: #1e293b;
+            --card-bg: #ffffff;
+            --glow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
+            transition: 0.5s;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            padding: 20px;
         }
 
-        /* Cabeçalho Premium */
-        header {
-            width: 100%;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #333;
-        }
-
-        .logo-area { display: flex; align-items: center; gap: 15px; }
-        .logo-area img { width: 50px; height: 50px; }
-
-        /* Card de Login */
-        #login-area {
-            background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            width: 350px;
-            margin-top: 100px;
-            text-align: center;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #4A5568;
-            background: #1A202C;
-            color: white;
-            box-sizing: border-box;
-        }
-
-        button.btn-main {
-            background-color: var(--accent-blue);
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            width: 100%;
-            font-weight: bold;
-            cursor: pointer;
+        /* Estilo da Logo Redonda com Efeito */
+        .logo-round {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-blue);
+            box-shadow: var(--glow);
             transition: 0.3s;
         }
 
-        button.btn-main:hover {
-            background-color: var(--light-blue);
-            transform: scale(1.02);
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 2px solid var(--accent-blue);
         }
 
-        /* Área do App */
-        #main-app { width: 80%; margin-top: 50px; }
+        /* Botão Luzinha Decorado */
+        .theme-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--accent-blue);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        #login-area {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 25px;
+            width: 320px;
+            text-align: center;
+            margin-top: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid var(--accent-blue);
+        }
+
+        input {
+            width: 85%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #444;
+            background: rgba(0,0,0,0.1);
+            color: var(--text-color);
+        }
+
+        button.action-btn {
+            background: var(--accent-blue);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.3s;
+            margin: 5px;
+        }
+
+        button.action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--glow);
+        }
+
+        #main-app { width: 100%; max-width: 600px; }
         .hidden { display: none; }
         
-        nav { display: flex; gap: 20px; justify-content: center; }
-        .nav-btn { background: #333; color: white; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; }
+        .content-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 20px;
+            border-left: 5px solid var(--accent-blue);
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-area">
-            <img src="star-blue.png" alt="Logo Matemática Avante">
-            <h1>Matemática Avante</h1>
+        <div style="display:flex; align-items:center; gap:15px;">
+            <img src="star-blue.png" alt="Logo" class="logo-round" onerror="this.style.display='none'">
+            <h1>Matemática Avante 🧮</h1>
         </div>
-        <button id="theme-toggle">Alternar Modo</button>
+        <button class="theme-btn" onclick="document.body.classList.toggle('light-mode')">💡</button>
     </header>
 
-    <!-- Área de Login -->
+    <!-- Login -->
     <div id="login-area">
-        <h2>Bem-vindo ao seu Futuro</h2>
-        <input type="text" id="user-role" placeholder="Aluno ou Admin">
-        <input type="password" id="password" placeholder="Senha (Admin: Kyla26)">
-        <button class="btn-main" onclick="realizarLogin()">Entrar na Plataforma</button>
+        <h2>🔐 Entre no Sistema</h2>
+        <input type="text" id="role" placeholder="👤 Aluno ou Admin">
+        <input type="password" id="pass" placeholder="🔑 Senha">
+        <br><br>
+        <button class="action-btn" onclick="fazerLogin()">Entrar 🚀</button>
     </div>
 
-    <!-- Área do App -->
+    <!-- App (Conteúdo) -->
     <div id="main-app" class="hidden">
-        <nav>
-            <button class="nav-btn" onclick="showTab('facil')">Nível Básico</button>
-            <button class="nav-btn" onclick="showTab('medio')">Nível Intermediário</button>
-            <button class="nav-btn" onclick="showTab('avancado')">Nível Avançado</button>
-        </nav>
-        <main id="content" style="text-align: center; margin-top: 50px;">
-            <p>Escolha um nível para começar sua jornada matemática.</p>
-        </main>
+        <div style="text-align:center; margin-top:20px;">
+            <button class="action-btn" onclick="carregarConteudo('basico')">📚 Básico</button>
+            <button class="action-btn" onclick="carregarConteudo('medio')">🧠 Intermediário</button>
+            <button class="action-btn" onclick="carregarConteudo('avancado')">🚀 Avançado</button>
+        </div>
+
+        <div id="conteudo-display" class="content-card">
+            <h3>✨ Selecione um nível para começar sua jornada!</h3>
+        </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyAcdDMUnIy5seRWvKCR5gO9wkZO4rDK4rc",
-            authDomain: "matematica-avante.firebaseapp.com",
-            databaseURL: "https://matematica-avante-default-rtdb.firebaseio.com",
-            projectId: "matematica-avante",
-            storageBucket: "matematica-avante.firebasestorage.app",
-            messagingSenderId: "856243957420",
-            appId: "1:856243957420:web:2246db8924b9a7384db909"
+    <script>
+        const bancoDeDados = {
+            basico: { titulo: "📚 Nível Básico", texto: "Aqui estudaremos Aritmética e Regra de Três. O básico essencial para o ENEM! ✅", quiz: "Quanto é 15% de 200?" },
+            medio: { titulo: "🧠 Nível Intermediário", texto: "Foco total em Trigonometria e Funções de 2º grau. Vamos lá! 🎯", quiz: "O que é o teorema de Pitágoras?" },
+            avancado: { titulo: "🚀 Nível Avançado", texto: "Cálculo diferencial, Integrais e Álgebra Linear. Desafio máximo! 💎", quiz: "Qual a derivada de x²?" }
         };
-        initializeApp(firebaseConfig);
 
-        window.realizarLogin = () => {
-            const role = document.getElementById('user-role').value;
-            const password = document.getElementById('password').value;
+        function fazerLogin() {
+            const role = document.getElementById('role').value.toLowerCase();
+            const pass = document.getElementById('pass').value;
 
-            if (role.toLowerCase() === 'admin' && password === 'Kyla26') {
-                document.getElementById('login-area').classList.add('hidden');
-                document.getElementById('main-app').classList.remove('hidden');
-            } else if (role.toLowerCase() === 'aluno') {
+            if((role === 'admin' && pass === 'Kyla26') || role === 'aluno') {
                 document.getElementById('login-area').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
             } else {
-                alert("Login ou senha incorretos!");
+                alert("❌ Usuário ou senha incorretos!");
             }
-        };
+        }
 
-        window.showTab = (tabName) => {
-            document.getElementById('content').innerHTML = `
-                <h2>Nível ${tabName.charAt(0).toUpperCase() + tabName.slice(1)}</h2>
-                <p>Conteúdo de ${tabName} sendo carregado do banco de dados...</p>
-                <img src="star-blue.png" style="width:100px; margin-top:20px;">
+        function carregarConteudo(nivel) {
+            const data = bancoDeDados[nivel];
+            document.getElementById('conteudo-display').innerHTML = `
+                <h2>${data.titulo}</h2>
+                <p>${data.texto}</p>
+                <div style="background:rgba(0,0,0,0.1); padding:15px; border-radius:10px;">
+                    <p><strong>📝 Quiz:</strong> ${data.quiz}</p>
+                    <input type="text" placeholder="Sua resposta aqui...">
+                    <button class="action-btn" onclick="alert('✅ Resposta enviada com sucesso!')">Enviar 📤</button>
+                </div>
             `;
-        };
+        }
     </script>
 </body>
 </html>
