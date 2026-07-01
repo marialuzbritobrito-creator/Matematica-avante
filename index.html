@@ -2,107 +2,354 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Matemática Avante 🧮</title>
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #38bdf8; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        :root { 
+            --bg: #0f172a; 
+            --card: #1e293b; 
+            --text: #f8fafc; 
+            --accent: #38bdf8; 
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+        body.light-mode { 
+            --bg: #f1f5f9; 
+            --card: #ffffff; 
+            --text: #1e293b; 
+        }
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            transition: 0.3s;
+        }
         
-        .container { width: 100%; max-width: 450px; }
-        header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .logo { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; }
+        .container { width: 100%; max-width: 480px; box-sizing: border-box; }
         
-        .card { background: var(--card); padding: 25px; border-radius: 20px; box-shadow: 0 10px 15px rgba(0,0,0,0.3); margin-bottom: 20px; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #444; box-sizing: border-box; }
-        button { background: var(--accent); border: none; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; margin: 5px 0; }
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            width: 100%; 
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: 20px;
+        }
+        .logo { width: 55px; height: 55px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; }
+        .theme-btn { background: rgba(255, 255, 255, 0.1); border: 2px solid var(--accent); font-size: 20px; cursor: pointer; padding: 8px; border-radius: 50%; color: var(--text); }
+        
+        .card { 
+            background: var(--card); 
+            padding: 22px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
+            margin-bottom: 20px; 
+            box-sizing: border-box;
+        }
+        
+        input, select { 
+            width: 100%; 
+            padding: 14px; 
+            margin: 12px 0; 
+            border-radius: 12px; 
+            border: 1px solid #475569; 
+            box-sizing: border-box; 
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text);
+        }
+        body.light-mode input, body.light-mode select { background: #fff; }
+        
+        button { 
+            background: var(--accent); 
+            color: #0f172a;
+            border: none; 
+            padding: 14px; 
+            border-radius: 12px; 
+            width: 100%; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 16px;
+            margin: 6px 0; 
+            transition: 0.2s;
+        }
+        button:active { transform: scale(0.98); }
         
         .hidden { display: none; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th, td { border: 1px solid #444; padding: 8px; text-align: left; }
+        
+        .feedback { 
+            padding: 12px; 
+            border-radius: 10px; 
+            margin-top: 15px; 
+            font-weight: bold; 
+            text-align: center;
+        }
+        
+        ul { padding-left: 20px; margin: 15px 0; }
+        li { margin-bottom: 12px; line-height: 1.5; }
+        a { color: var(--accent); font-weight: bold; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+        th, td { border: 1px solid #475569; padding: 10px; text-align: left; }
+        th { background: rgba(0,0,0,0.2); }
+        .table-wrapper { width: 100%; overflow-x: auto; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <img src="logo.png" class="logo" alt="Logo" onerror="this.style.display='none'">
-        <h1>Matemática Avante</h1>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <img src="logo.png" class="logo" alt="Logo" onerror="this.style.display='none'">
+            <h1 style="font-size: 1.4rem; margin: 0;">Matemática Avante</h1>
+        </div>
+        <button class="theme-btn" onclick="document.body.classList.toggle('light-mode')">💡</button>
     </header>
 
-    <!-- Login -->
+    <!-- Tela de Login -->
     <div id="login-screen" class="card">
-        <h2>🔐 Entre no Sistema</h2>
-        <input type="text" id="user-name" placeholder="Seu nome">
+        <h2 style="margin-top: 0; text-align: center;">🔐 Identificação</h2>
+        <input type="text" id="user-name" placeholder="👤 Digite seu nome completo">
         
-        <label>Você é:</label>
-        <select id="role-select" onchange="togglePass()">
-            <option value="aluno">Aluno (Sem senha)</option>
-            <option value="admin">Administrador</option>
+        <label style="font-weight: bold; font-size: 14px;">Selecione seu perfil:</label>
+        <select id="role-select" onchange="togglePasswordField()">
+            <option value="aluno">Aluno (Acesso Livre)</option>
+            <option value="admin">Administrador (Requer Senha)</option>
         </select>
 
         <div id="pass-field" class="hidden">
-            <input type="password" id="pass-code" placeholder="Digite a senha de administrador">
+            <input type="password" id="pass-code" placeholder="🔑 Digite a senha administrativa">
         </div>
 
-        <button onclick="login()">Entrar 🚀</button>
+        <button onclick="efetuarLogin()">Entrar no Portal 🚀</button>
     </div>
 
-    <!-- App -->
+    <!-- Interface Principal -->
     <div id="main-screen" class="hidden">
-        <div class="card">
-            <button onclick="renderContent('basico')">📚 Básico</button>
-            <button onclick="renderContent('medio')">🧠 Intermediário</button>
-            <button onclick="renderContent('avancado')">🚀 Avançado</button>
-            <button id="admin-btn" class="hidden" onclick="renderAdmin()" style="background:#ef4444;">⚙️ Painel Admin</button>
+        <div class="card" style="padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button onclick="carregarNivel('basico')">📚 Básico</button>
+            <button onclick="carregarNivel('medio')">🧠 Intermediário</button>
+            <button onclick="carregarNivel('avancado')">🚀 Avançado</button>
+            <button onclick="carregarCanais()" style="background: #a855f7; color: white;">🔗 Referências</button>
+            <button id="admin-btn" class="hidden" onclick="carregarPainelAdmin()" style="background: var(--danger); color: white; grid-column: span 2;">⚙️ Painel Admin</button>
         </div>
+        
         <div id="content-area" class="card">
-            <h3>Selecione um nível.</h3>
+            <h3 style="margin-top: 0; text-align: center; color: var(--accent);">✨ Boas-vindas!</h3>
+            <p style="text-align: center; line-height: 1.6;">Escolha uma das opções acima para exibir os conteúdos teóricos, exercícios e canais recomendados.</p>
         </div>
     </div>
 </div>
 
 <script>
-    // A senha fica escondida aqui no código, longe dos campos de digitação
-    const SECRET_KEY = "Kyla26";
+    // DEFINA A SENHA DO ADMINISTRADOR AQUI DENTRO DAS ASPAS
+    const SECRET_KEY = "SUA_SENHA_AQUI";
 
-    function togglePass() {
-        const role = document.getElementById('role-select').value;
-        const field = document.getElementById('pass-field');
-        field.classList.toggle('hidden', role === 'aluno');
+    // Banco de dados interno com teorias reais, quizes e respostas exatas
+    const bancoMatematica = {
+        basico: {
+            titulo: "📚 Nível Básico: Razões, Proporções e Porcentagem",
+            teoria: "A Regra de Três Simples permite encontrar um valor desconhecido a partir de três valores conhecidos que possuem uma relação de proporcionalidade direta ou inversa. A Porcentagem representa uma razão cujo denominador é igual a 100, indicada pelo símbolo %.",
+            pergunta: "Um produto custava R$ 200,00 e recebeu um desconto salutar de 15%. Qual é o novo preço final em reais?",
+            gabarito: "170"
+        },
+        medio: {
+            titulo: "🧠 Nível Intermediário: Trigonometria e Funções",
+            teoria: "No Triângulo Retângulo, a trigonometria estuda as relações entre os lados e os ângulos agudos, definindo as razões do Seno (cateto oposto sobre a hipotenusa), Cosseno (cateto adjacente sobre hipotenusa) e Tangente. A soma de todos os ângulos internos de qualquer triângulo plano é sempre constante.",
+            pergunta: "Qual é o valor exato, em graus, da soma de todos os ângulos internos de um triângulo plano?",
+            gabarito: "180"
+        },
+        avancado: {
+            titulo: "🚀 Nível Avançado: Introdução a Matrizes",
+            teoria: "Uma Matriz Identidade é uma matriz quadrada em que todos os elementos da diagonal principal são iguais a 1 e todos os outros elementos restantes fora da diagonal são rigorosamente iguais a zero. O determinante de uma matriz identidade possui uma propriedade numérica única.",
+            pergunta: "Qual é o valor numérico do determinante de uma Matriz Identidade de ordem 2?",
+            gabarito: "1"
+        }
+    };
+
+    function togglePasswordField() {
+        const perfil = document.getElementById('role-select').value;
+        const campoSenha = document.getElementById('pass-field');
+        if (perfil === 'admin') {
+            campoSenha.classList.remove('hidden');
+        } else {
+            campoSenha.classList.add('hidden');
+        }
     }
 
-    function login() {
-        const name = document.getElementById('user-name').value;
-        const role = document.getElementById('role-select').value;
-        const pass = document.getElementById('pass-code').value;
+    function efetuarLogin() {
+        const nome = document.getElementById('user-name').value.trim();
+        const perfil = document.getElementById('role-select').value;
+        const senhaInserida = document.getElementById('pass-code').value;
 
-        if (!name) { alert("Por favor, digite seu nome!"); return; }
-
-        if (role === 'admin' && pass !== SECRET_KEY) {
-            alert("Senha de Administrador incorreta!");
+        if (nome === "") {
+            alert("⚠️ Por favor, preencha o campo de nome antes de prosseguir.");
             return;
         }
 
-        // Salvar log
-        let logs = JSON.parse(localStorage.getItem('logs') || "[]");
-        logs.push({ nome: name, hora: new Date().toLocaleTimeString(), tipo: role });
-        localStorage.setItem('logs', JSON.stringify(logs));
+        if (perfil === 'admin') {
+            if (senhaInserida !== SECRET_KEY) {
+                alert("❌ Senha Administrativa Inválida! Acesso negado.");
+                return;
+            }
+        }
 
+        // Salva os dados de acesso de forma crível e local no dispositivo
+        let registros = JSON.parse(localStorage.getItem('matematica_logs') || "[]");
+        registros.push({
+            estudante: nome,
+            timestamp: new Date().toLocaleTimeString('pt-BR'),
+            data: new Date().toLocaleDateString('pt-BR'),
+            categoria: perfil === 'admin' ? 'Administrador' : 'Aluno',
+            progresso: 'Acessou o Sistema'
+        });
+        localStorage.setItem('matematica_logs', JSON.stringify(registros));
+
+        // Transição de interfaces
         document.getElementById('login-screen').classList.add('hidden');
         document.getElementById('main-screen').classList.remove('hidden');
-        if (role === 'admin') document.getElementById('admin-btn').classList.remove('hidden');
+
+        if (perfil === 'admin') {
+            document.getElementById('admin-btn').classList.remove('hidden');
+        }
     }
 
-    // Funções de conteúdo e admin seguem a mesma lógica anterior...
-    function renderContent(nivel) {
-        document.getElementById('content-area').innerHTML = `<h3>Nível ${nivel.toUpperCase()} carregado!</h3>`;
+    function carregarNivel(nivelSelecionado) {
+        const item = bancoMatematica[nivelSelecionado];
+        const nomeAtual = document.getElementById('user-name').value.trim();
+        
+        // Atualiza a trilha de progresso no armazenamento para o Administrador visualizar
+        let registros = JSON.parse(localStorage.getItem('matematica_logs') || "[]");
+        registros.push({
+            estudante: nomeAtual,
+            timestamp: new Date().toLocaleTimeString('pt-BR'),
+            data: new Date().toLocaleDateString('pt-BR'),
+            categoria: 'Aluno',
+            progresso: `Estudando nível ${nivelSelecionado}`
+        });
+        localStorage.setItem('matematica_logs', JSON.stringify(registros));
+
+        document.getElementById('content-area').innerHTML = `
+            <h2 style="margin-top:0; color: var(--accent); font-size: 1.3rem;">${item.titulo}</h2>
+            <p style="line-height:1.5; font-size: 15px; text-align: justify;">${item.teoria}</p>
+            
+            <div style="background: rgba(0,0,0,0.15); padding: 15px; border-radius: 12px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold;">📝 Desafio Prático:</p>
+                <p style="font-size: 15px; line-height: 1.4;">${item.pergunta}</p>
+                <input type="number" id="resposta-estudante" placeholder="Digite sua resposta (somente números)">
+                <button onclick="verificarQuestao('${nivelSelecionado}')" style="background: var(--accent); margin-bottom:0;">Verificar Resposta 📤</button>
+                <div id="zona-feedback"></div>
+            </div>
+        `;
     }
 
-    function renderAdmin() {
-        const logs = JSON.parse(localStorage.getItem('logs') || "[]");
-        let t = "<h2>Logs</h2><table><tr><th>Nome</th><th>Hora</th></tr>";
-        logs.forEach(l => t += `<tr><td>${l.nome}</td><td>${l.hora}</td></tr>`);
-        document.getElementById('content-area').innerHTML = t + "</table>";
+    function verificarQuestao(nivel) {
+        const respostaUsuario = document.getElementById('resposta-estudante').value.trim();
+        const gabaritoOficial = bancoMatematica[nivel].gabarito;
+        const feedbackContainer = document.getElementById('zona-feedback');
+        const nomeEstudante = document.getElementById('user-name').value.trim();
+
+        if (respostaUsuario === "") {
+            alert("⚠️ Digite um valor numérico para avaliar.");
+            return;
+        }
+
+        let statusResultado = "";
+        if (respostaUsuario === gabaritoOficial) {
+            statusResultado = "Acertou o desafio";
+            feedbackContainer.innerHTML = `
+                <div class="feedback" style="background: var(--success); color: #fff;">
+                    🎉 Excelente desempenho! Sua resposta está absolutamente correta!
+                </div>
+            `;
+        } else {
+            statusResultado = "Errou o desafio";
+            feedbackContainer.innerHTML = `
+                <div class="feedback" style="background: var(--danger); color: #fff;">
+                    ❌ Resposta incorreta. O resultado esperado era: ${gabaritoOficial}. Revise os conceitos teóricos!
+                </div>
+            `;
+        }
+
+        // Armazena a métrica de acerto/erro para auditoria no painel admin
+        let registros = JSON.parse(localStorage.getItem('matematica_logs') || "[]");
+        registros.push({
+            estudante: nomeEstudante,
+            timestamp: new Date().toLocaleTimeString('pt-BR'),
+            data: new Date().toLocaleDateString('pt-BR'),
+            categoria: 'Aluno',
+            progresso: `${statusResultado} (${nivel})`
+        });
+        localStorage.setItem('matematica_logs', JSON.stringify(registros));
+    }
+
+    function carregarCanais() {
+        document.getElementById('content-area').innerHTML = `
+            <h2 style="margin-top:0; color:#a855f7; font-size: 1.3rem;">🔗 Referências Curadas e Confiáveis</h2>
+            <p style="font-size: 14px; line-height: 1.5;">Fontes de estudo legítimas com didática de alta qualidade:</p>
+            <ul>
+                <li><b>Professor Ferretto:</b> Canal excelente com foco detalhado em matemática básica e preparação para o ENEM. <br><a href="https://www.youtube.com/@ProfessorFerreto" target="_blank">Acessar Canal 🎥</a></li>
+                <li><b>Matemática Rio:</b> Ministrado pelo Prof. Rafael Procópio, focado em macetes rápidos e explicações visuais de fácil assimilação. <br><a href="https://www.youtube.com/@MatematicaRio" target="_blank">Acessar Canal 🎥</a></li>
+                <li><b>Khan Academy Brasil:</b> Plataforma educacional gratuita e sem fins lucrativos recheada de exercícios e fundamentos práticos. <br><a href="https://pt.khanacademy.org" target="_blank">Visitar Plataforma 🌐</a></li>
+            </ul>
+        `;
+    }
+
+    function carregarPainelAdmin() {
+        const logs = JSON.parse(localStorage.getItem('matematica_logs') || "[]");
+        
+        let conteudoHtml = `
+            <h2 style="margin-top:0; color: var(--danger); font-size: 1.3rem;">⚙️ Painel de Monitoramento</h2>
+            <p style="font-size: 14px; margin-bottom: 10px;">Abaixo constam as ações em tempo real executadas pelos usuários (entradas, saídas e desempenho):</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Estudante</th>
+                            <th>Ação / Nível</th>
+                            <th>Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        if (logs.length === 0) {
+            conteudoHtml += `<tr><td colspan="3" style="text-align:center;">Nenhum registro de atividade capturado ainda.</td></tr>`;
+        } else {
+            // Exibe os logs do mais recente ao mais antigo
+            for (let i = logs.length - 1; i >= 0; i--) {
+                conteudoHtml += `
+                    <tr>
+                        <td><b>${logs[i].estudante}</b><br><small style="color:#94a3b8;">${logs[i].data}</small></td>
+                        <td>${logs[i].progresso}</td>
+                        <td>${logs[i].timestamp}</td>
+                    </tr>
+                `;
+            }
+        }
+
+        conteudoHtml += `
+                    </tbody>
+                </table>
+            </div>
+            <button onclick="limparHistoricoLogs()" style="background: var(--danger); color:white; margin-top:15px;">Limpar Registros do Sistema 🧹</button>
+        `;
+        
+        document.getElementById('content-area').innerHTML = conteudoHtml;
+    }
+
+    function limparHistoricoLogs() {
+        if(confirm("Deseja deletar permanentemente todo o histórico de avanço dos alunos?")) {
+            localStorage.removeItem('matematica_logs');
+            carregarPainelAdmin();
+        }
     }
 </script>
 </body>
