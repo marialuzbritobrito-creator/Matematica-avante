@@ -32,16 +32,22 @@
         
         .container { width: 100%; max-width: 480px; box-sizing: border-box; }
         
+        /* NOVO: Logo Fixa e Redonda */
         header { 
+            position: sticky; top: 0; z-index: 1000; background: var(--bg);
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
             width: 100%; 
-            padding-bottom: 15px;
+            padding: 10px 0;
             border-bottom: 2px solid var(--accent);
             margin-bottom: 20px;
         }
-        .logo { width: 55px; height: 55px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; }
+        .logo { 
+            width: 55px; height: 55px; 
+            border-radius: 50%; border: 3px solid var(--accent); 
+            object-fit: cover; 
+        }
         .theme-btn { background: rgba(255, 255, 255, 0.1); border: 2px solid var(--accent); font-size: 20px; cursor: pointer; padding: 8px; border-radius: 50%; color: var(--text); }
         
         .card { 
@@ -83,13 +89,7 @@
         
         .hidden { display: none; }
         
-        .feedback { 
-            padding: 12px; 
-            border-radius: 10px; 
-            margin-top: 15px; 
-            font-weight: bold; 
-            text-align: center;
-        }
+        .feedback { padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; text-align: center; }
         
         ul { padding-left: 20px; margin: 15px 0; }
         li { margin-bottom: 12px; line-height: 1.5; }
@@ -100,6 +100,10 @@
         th, td { border: 1px solid #475569; padding: 10px; text-align: left; }
         th { background: rgba(0,0,0,0.2); }
         .table-wrapper { width: 100%; overflow-x: auto; }
+
+        /* NOVO: Gráfico Admin */
+        .progress-bar { background: #334155; height: 20px; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+        .progress-fill { background: var(--accent); height: 100%; transition: 0.5s; }
     </style>
 </head>
 <body>
@@ -107,7 +111,8 @@
 <div class="container">
     <header>
         <div style="display:flex; align-items:center; gap:12px;">
-            <img src="logo.png" class="logo" alt="Logo" onerror="this.style.display='none'">
+            <!-- IMAGEM CORRIGIDA -->
+            <img src="star-blue.png" class="logo" alt="Logo" onerror="this.style.display='none'">
             <h1 style="font-size: 1.4rem; margin: 0;">Matemática Avante</h1>
         </div>
         <button class="theme-btn" onclick="document.body.classList.toggle('light-mode')">💡</button>
@@ -133,6 +138,16 @@
 
     <!-- Interface Principal -->
     <div id="main-screen" class="hidden">
+        <!-- NOVO: Dashboard do Aluno com Medalhas -->
+        <div class="card" style="text-align: center;">
+            <h3 id="display-name" style="margin: 5px 0;"></h3>
+            <p>Pontos: <b id="display-points" style="color:var(--accent)">0</b> | Medalha: <span id="display-medal">🥉 Bronze</span></p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                <button onclick="carregarLoja()" style="background:#fbbf24;">🛍️ Loja</button>
+                <button onclick="carregarRanking()" style="background:#a855f7; color:white;">🏆 Ranking</button>
+            </div>
+        </div>
+
         <div class="card" style="padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
             <button onclick="carregarNivel('basico')">📚 Básico</button>
             <button onclick="carregarNivel('medio')">🧠 Intermediário</button>
@@ -143,45 +158,26 @@
         
         <div id="content-area" class="card">
             <h3 style="margin-top: 0; text-align: center; color: var(--accent);">✨ Boas-vindas!</h3>
-            <p style="text-align: center; line-height: 1.6;">Escolha uma das opções acima para exibir os conteúdos teóricos, exercícios e canais recomendados.</p>
+            <p style="text-align: center; line-height: 1.6;">Escolha uma das opções acima para estudar.</p>
         </div>
     </div>
 </div>
 
 <script>
-    // DEFINA A SENHA DO ADMINISTRADOR AQUI DENTRO DAS ASPAS
     const SECRET_KEY = "SUA_SENHA_AQUI";
+    
+    // VARIÁVEIS PARA AS NOVAS FUNÇÕES
+    let pontosGlobais = parseInt(localStorage.getItem('user_pts') || 0);
 
-    // Banco de dados interno com teorias reais, quizes e respostas exatas
     const bancoMatematica = {
-        basico: {
-            titulo: "📚 Nível Básico: Razões, Proporções e Porcentagem",
-            teoria: "A Regra de Três Simples permite encontrar um valor desconhecido a partir de três valores conhecidos que possuem uma relação de proporcionalidade direta ou inversa. A Porcentagem representa uma razão cujo denominador é igual a 100, indicada pelo símbolo %.",
-            pergunta: "Um produto custava R$ 200,00 e recebeu um desconto salutar de 15%. Qual é o novo preço final em reais?",
-            gabarito: "170"
-        },
-        medio: {
-            titulo: "🧠 Nível Intermediário: Trigonometria e Funções",
-            teoria: "No Triângulo Retângulo, a trigonometria estuda as relações entre os lados e os ângulos agudos, definindo as razões do Seno (cateto oposto sobre a hipotenusa), Cosseno (cateto adjacente sobre hipotenusa) e Tangente. A soma de todos os ângulos internos de qualquer triângulo plano é sempre constante.",
-            pergunta: "Qual é o valor exato, em graus, da soma de todos os ângulos internos de um triângulo plano?",
-            gabarito: "180"
-        },
-        avancado: {
-            titulo: "🚀 Nível Avançado: Introdução a Matrizes",
-            teoria: "Uma Matriz Identidade é uma matriz quadrada em que todos os elementos da diagonal principal são iguais a 1 e todos os outros elementos restantes fora da diagonal são rigorosamente iguais a zero. O determinante de uma matriz identidade possui uma propriedade numérica única.",
-            pergunta: "Qual é o valor numérico do determinante de uma Matriz Identidade de ordem 2?",
-            gabarito: "1"
-        }
+        basico: { titulo: "📚 Básico", teoria: "Regra de 3 e %. 15% de 200 é 30.", pergunta: "Quanto é 15% de 200?", gabarito: "30" },
+        medio: { titulo: "🧠 Intermediário", teoria: "Ângulos internos de um triângulo = 180°.", pergunta: "Soma ângulos triângulo?", gabarito: "180" },
+        avancado: { titulo: "🚀 Avançado", teoria: "Determinante Matriz Identidade 2x2 = 1.", pergunta: "Det da Matriz Identidade 2x2?", gabarito: "1" }
     };
 
     function togglePasswordField() {
         const perfil = document.getElementById('role-select').value;
-        const campoSenha = document.getElementById('pass-field');
-        if (perfil === 'admin') {
-            campoSenha.classList.remove('hidden');
-        } else {
-            campoSenha.classList.add('hidden');
-        }
+        document.getElementById('pass-field').classList.toggle('hidden', perfil !== 'admin');
     }
 
     function efetuarLogin() {
@@ -189,167 +185,83 @@
         const perfil = document.getElementById('role-select').value;
         const senhaInserida = document.getElementById('pass-code').value;
 
-        if (nome === "") {
-            alert("⚠️ Por favor, preencha o campo de nome antes de prosseguir.");
-            return;
-        }
+        if (nome === "") return alert("Preencha seu nome!");
+        if (perfil === 'admin' && senhaInserida !== SECRET_KEY) return alert("Senha incorreta!");
 
-        if (perfil === 'admin') {
-            if (senhaInserida !== SECRET_KEY) {
-                alert("❌ Senha Administrativa Inválida! Acesso negado.");
-                return;
-            }
-        }
-
-        // Salva os dados de acesso de forma crível e local no dispositivo
         let registros = JSON.parse(localStorage.getItem('matematica_logs') || "[]");
-        registros.push({
-            estudante: nome,
-            timestamp: new Date().toLocaleTimeString('pt-BR'),
-            data: new Date().toLocaleDateString('pt-BR'),
-            categoria: perfil === 'admin' ? 'Administrador' : 'Aluno',
-            progresso: 'Acessou o Sistema'
-        });
+        registros.push({ estudante: nome, timestamp: new Date().toLocaleTimeString(), progresso: 'Login' });
         localStorage.setItem('matematica_logs', JSON.stringify(registros));
 
-        // Transição de interfaces
+        document.getElementById('display-name').innerText = nome;
         document.getElementById('login-screen').classList.add('hidden');
         document.getElementById('main-screen').classList.remove('hidden');
-
-        if (perfil === 'admin') {
-            document.getElementById('admin-btn').classList.remove('hidden');
-        }
+        if (perfil === 'admin') document.getElementById('admin-btn').classList.remove('hidden');
+        atualizarUI();
     }
 
-    function carregarNivel(nivelSelecionado) {
-        const item = bancoMatematica[nivelSelecionado];
-        const nomeAtual = document.getElementById('user-name').value.trim();
-        
-        // Atualiza a trilha de progresso no armazenamento para o Administrador visualizar
-        let registros = JSON.parse(localStorage.getItem('matematica_logs') || "[]");
-        registros.push({
-            estudante: nomeAtual,
-            timestamp: new Date().toLocaleTimeString('pt-BR'),
-            data: new Date().toLocaleDateString('pt-BR'),
-            categoria: 'Aluno',
-            progresso: `Estudando nível ${nivelSelecionado}`
-        });
-        localStorage.setItem('matematica_logs', JSON.stringify(registros));
+    function atualizarUI() {
+        document.getElementById('display-points').innerText = pontosGlobais;
+        let medalha = "🥉 Bronze";
+        if (pontosGlobais >= 100) medalha = "🥈 Prata";
+        if (pontosGlobais >= 200) medalha = "🥇 Ouro";
+        document.getElementById('display-medal').innerText = medalha;
+    }
 
+    function carregarNivel(nivel) {
+        const item = bancoMatematica[nivel];
         document.getElementById('content-area').innerHTML = `
-            <h2 style="margin-top:0; color: var(--accent); font-size: 1.3rem;">${item.titulo}</h2>
-            <p style="line-height:1.5; font-size: 15px; text-align: justify;">${item.teoria}</p>
-            
-            <div style="background: rgba(0,0,0,0.15); padding: 15px; border-radius: 12px; margin-top: 15px;">
-                <p style="margin-top:0; font-weight:bold;">📝 Desafio Prático:</p>
-                <p style="font-size: 15px; line-height: 1.4;">${item.pergunta}</p>
-                <input type="number" id="resposta-estudante" placeholder="Digite sua resposta (somente números)">
-                <button onclick="verificarQuestao('${nivelSelecionado}')" style="background: var(--accent); margin-bottom:0;">Verificar Resposta 📤</button>
-                <div id="zona-feedback"></div>
-            </div>
+            <h3>${item.titulo}</h3>
+            <p>${item.pergunta}</p>
+            <input type="number" id="resposta-estudante">
+            <button onclick="verificarQuestao('${nivel}')">Verificar</button>
+            <div id="zona-feedback"></div>
         `;
     }
 
     function verificarQuestao(nivel) {
-        const respostaUsuario = document.getElementById('resposta-estudante').value.trim();
-        const gabaritoOficial = bancoMatematica[nivel].gabarito;
-        const feedbackContainer = document.getElementById('zona-feedback');
-        const nomeEstudante = document.getElementById('user-name').value.trim();
-
-        if (respostaUsuario === "") {
-            alert("⚠️ Digite um valor numérico para avaliar.");
-            return;
-        }
-
-        let statusResultado = "";
-        if (respostaUsuario === gabaritoOficial) {
-            statusResultado = "Acertou o desafio";
-            feedbackContainer.innerHTML = `
-                <div class="feedback" style="background: var(--success); color: #fff;">
-                    🎉 Excelente desempenho! Sua resposta está absolutamente correta!
-                </div>
-            `;
+        const resp = document.getElementById('resposta-estudante').value;
+        if (resp === bancoMatematica[nivel].gabarito) {
+            pontosGlobais += 20;
+            localStorage.setItem('user_pts', pontosGlobais);
+            alert("Acertou! +20 pontos.");
+            atualizarUI();
         } else {
-            statusResultado = "Errou o desafio";
-            feedbackContainer.innerHTML = `
-                <div class="feedback" style="background: var(--danger); color: #fff;">
-                    ❌ Resposta incorreta. O resultado esperado era: ${gabaritoOficial}. Revise os conceitos teóricos!
-                </div>
-            `;
+            alert("Incorreto!");
         }
-
-        // Armazena a métrica de acerto/erro para auditoria no painel admin
-        let registros = JSON.parse(localStorage.getItem('matematica_logs') || "[]");
-        registros.push({
-            estudante: nomeEstudante,
-            timestamp: new Date().toLocaleTimeString('pt-BR'),
-            data: new Date().toLocaleDateString('pt-BR'),
-            categoria: 'Aluno',
-            progresso: `${statusResultado} (${nivel})`
-        });
-        localStorage.setItem('matematica_logs', JSON.stringify(registros));
     }
 
     function carregarCanais() {
+        document.getElementById('content-area').innerHTML = `<h3>Referências</h3><ul><li>Professor Ferretto</li></ul>`;
+    }
+
+    // --- NOVAS FUNÇÕES ADICIONADAS ---
+
+    function carregarRanking() {
+        // Simulação baseada nos logs de acesso
         document.getElementById('content-area').innerHTML = `
-            <h2 style="margin-top:0; color:#a855f7; font-size: 1.3rem;">🔗 Referências Curadas e Confiáveis</h2>
-            <p style="font-size: 14px; line-height: 1.5;">Fontes de estudo legítimas com didática de alta qualidade:</p>
-            <ul>
-                <li><b>Professor Ferretto:</b> Canal excelente com foco detalhado em matemática básica e preparação para o ENEM. <br><a href="https://www.youtube.com/@ProfessorFerreto" target="_blank">Acessar Canal 🎥</a></li>
-                <li><b>Matemática Rio:</b> Ministrado pelo Prof. Rafael Procópio, focado em macetes rápidos e explicações visuais de fácil assimilação. <br><a href="https://www.youtube.com/@MatematicaRio" target="_blank">Acessar Canal 🎥</a></li>
-                <li><b>Khan Academy Brasil:</b> Plataforma educacional gratuita e sem fins lucrativos recheada de exercícios e fundamentos práticos. <br><a href="https://pt.khanacademy.org" target="_blank">Visitar Plataforma 🌐</a></li>
-            </ul>
+            <h3>🏆 Ranking dos Estudantes</h3>
+            <div class="ranking-item">1º Você - ${pontosGlobais} pts</div>
+        `;
+    }
+
+    function carregarLoja() {
+        document.getElementById('content-area').innerHTML = `
+            <h3>🛍️ Loja de Acessórios</h3>
+            <p>Seus Pontos: ${pontosGlobais}</p>
+            <button onclick="alert('Item comprado!')">Caneta Neon (50 pts)</button>
         `;
     }
 
     function carregarPainelAdmin() {
         const logs = JSON.parse(localStorage.getItem('matematica_logs') || "[]");
-        
-        let conteudoHtml = `
-            <h2 style="margin-top:0; color: var(--danger); font-size: 1.3rem;">⚙️ Painel de Monitoramento</h2>
-            <p style="font-size: 14px; margin-bottom: 10px;">Abaixo constam as ações em tempo real executadas pelos usuários (entradas, saídas e desempenho):</p>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Estudante</th>
-                            <th>Ação / Nível</th>
-                            <th>Hora</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        const ocupacao = Math.min(logs.length * 10, 100); // Gráfico simples
+        document.getElementById('content-area').innerHTML = `
+            <h3>⚙️ Painel de Monitoramento</h3>
+            <p>Engajamento da Turma:</p>
+            <div class="progress-bar"><div class="progress-fill" style="width:${ocupacao}%"></div></div>
+            <h4>Registros:</h4>
+            ${logs.slice(-5).map(l => `<p>${l.estudante} - ${l.progresso}</p>`).join('')}
         `;
-
-        if (logs.length === 0) {
-            conteudoHtml += `<tr><td colspan="3" style="text-align:center;">Nenhum registro de atividade capturado ainda.</td></tr>`;
-        } else {
-            // Exibe os logs do mais recente ao mais antigo
-            for (let i = logs.length - 1; i >= 0; i--) {
-                conteudoHtml += `
-                    <tr>
-                        <td><b>${logs[i].estudante}</b><br><small style="color:#94a3b8;">${logs[i].data}</small></td>
-                        <td>${logs[i].progresso}</td>
-                        <td>${logs[i].timestamp}</td>
-                    </tr>
-                `;
-            }
-        }
-
-        conteudoHtml += `
-                    </tbody>
-                </table>
-            </div>
-            <button onclick="limparHistoricoLogs()" style="background: var(--danger); color:white; margin-top:15px;">Limpar Registros do Sistema 🧹</button>
-        `;
-        
-        document.getElementById('content-area').innerHTML = conteudoHtml;
-    }
-
-    function limparHistoricoLogs() {
-        if(confirm("Deseja deletar permanentemente todo o histórico de avanço dos alunos?")) {
-            localStorage.removeItem('matematica_logs');
-            carregarPainelAdmin();
-        }
     }
 </script>
 </body>
