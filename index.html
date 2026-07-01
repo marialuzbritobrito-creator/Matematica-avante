@@ -2,21 +2,64 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <!-- Meta tag essencial para o celular -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Matemática Avante 🧮</title>
     <style>
         :root { --bg-color: #0f172a; --text-color: #f8fafc; --card-bg: #1e293b; --accent-blue: #38bdf8; }
         body.light-mode { --bg-color: #f1f5f9; --text-color: #1e293b; --card-bg: #ffffff; }
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; transition: 0.5s; padding: 20px; }
         
-        .logo-round { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--accent-blue); }
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-blue); padding-bottom: 10px; }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 10px; /* Menos padding lateral em celulares */
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         
-        #login-area, #main-app { background: var(--card-bg); padding: 30px; border-radius: 20px; max-width: 600px; margin: 20px auto; }
-        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #444; }
-        button { background: var(--accent-blue); border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; margin: 5px; }
+        /* Ajustes Mobile: Tamanhos maiores para tocar */
+        .logo-round { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--accent-blue); }
+        header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #444; padding: 10px; text-align: left; }
+        #login-area, #main-app { 
+            background: var(--card-bg); 
+            padding: 20px; 
+            border-radius: 15px; 
+            width: 100%; 
+            max-width: 400px; /* Não passa de 400px */
+            box-sizing: border-box; /* Garante que o padding não quebre o layout */
+            margin-top: 20px; 
+        }
+        
+        input { 
+            width: 100%; 
+            padding: 15px; /* Tamanho maior para facilitar digitação */
+            margin: 10px 0; 
+            border-radius: 10px; 
+            border: 1px solid #444; 
+            box-sizing: border-box;
+            font-size: 16px; /* Evita zoom automático em iPhones */
+        }
+        
+        button { 
+            background: var(--accent-blue); 
+            border: none; 
+            padding: 15px 20px; /* Botão grande para o dedo */
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        /* Tabela Responsiva */
+        .table-container { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        
         .hidden { display: none; }
     </style>
 </head>
@@ -25,9 +68,9 @@
     <header>
         <div style="display:flex; align-items:center; gap:10px;">
             <img src="star-blue.png" alt="Logo" class="logo-round" onerror="this.style.display='none'">
-            <h1>Matemática Avante 🧮</h1>
+            <h1 style="font-size: 1.2rem;">Matemática Avante</h1>
         </div>
-        <button onclick="document.body.classList.toggle('light-mode')">💡</button>
+        <button style="width: auto; padding: 10px;" onclick="document.body.classList.toggle('light-mode')">💡</button>
     </header>
 
     <div id="login-area">
@@ -48,48 +91,32 @@
     </div>
 
     <script>
-        // Função de Login e Registro de Atividade
         function fazerLogin() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('pass').value;
-            
             if(user && (pass === 'Kyla26' || pass === 'aluno123')) {
                 const isAdmin = (pass === 'Kyla26');
-                
-                // Salvar Log de Acesso
                 let logs = JSON.parse(localStorage.getItem('logs') || "[]");
                 logs.push({ usuario: user, hora: new Date().toLocaleTimeString(), tipo: isAdmin ? "Admin" : "Aluno" });
                 localStorage.setItem('logs', JSON.stringify(logs));
-                
                 document.getElementById('login-area').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
                 if(isAdmin) document.getElementById('admin-btn').classList.remove('hidden');
-            } else { alert("❌ Login ou senha incorretos!"); }
+            } else { alert("❌ Dados incorretos!"); }
         }
 
-        // Registrar Progresso do Aluno
         function carregarConteudo(nivel) {
-            // Salvar Progresso
-            const user = document.getElementById('username').value;
-            localStorage.setItem('progresso_' + user, nivel);
-            
             document.getElementById('display-area').innerHTML = `
                 <h2>Nível: ${nivel.toUpperCase()}</h2>
-                <p>Estudando: ${nivel === 'basico' ? 'Aritmética' : 'Geometria'}</p>
-                <button onclick="alert('Concluído!')">Marcar como Finalizado ✅</button>
+                <button onclick="alert('Marcado!')">Concluir ✅</button>
             `;
         }
 
-        // Painel do Administrador
         function abrirAdmin() {
             const logs = JSON.parse(localStorage.getItem('logs') || "[]");
-            let html = "<h2>⚙️ Painel Administrativo</h2><table><tr><th>Usuário</th><th>Tipo</th><th>Hora</th></tr>";
-            
-            logs.forEach(log => {
-                html += `<tr><td>${log.usuario}</td><td>${log.tipo}</td><td>${log.hora}</td></tr>`;
-            });
-            
-            html += "</table><button onclick='localStorage.clear(); location.reload();'>Limpar Dados 🧹</button>";
+            let html = "<h2>⚙️ Logs</h2><div class='table-container'><table><tr><th>User</th><th>Hora</th></tr>";
+            logs.forEach(log => { html += `<tr><td>${log.usuario}</td><td>${log.hora}</td></tr>`; });
+            html += "</table></div><button onclick='localStorage.clear(); location.reload();'>Limpar 🧹</button>";
             document.getElementById('display-area').innerHTML = html;
         }
     </script>
